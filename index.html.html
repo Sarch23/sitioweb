@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>----JavaScript---- Temario Completo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #000;
+            color: #eee;
+            line-height: 1.6;
+        }
+
+        /* ===== CABECERA ===== */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #111;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #0ff;
+            font-size: 1.8em;
+        }
+
+        .logo h1 {
+            color: #0ff;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        .search-container input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            background: #222;
+            color: white;
+            margin-right: 10px;
+            font-size: 14px;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-container input::placeholder {
+            color: #777;
+        }
+
+        .search-container i {
+            color: #0ff;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: #0ff;
+            font-size: 1.5em;
+            display: none;
+            cursor: pointer;
+        }
+
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* ===== SIDEBAR IZQUIERDO ===== */
+        .sidebar {
+            flex: 0 0 250px;
+            background: #111;
+            border-radius: 10px;
+            padding: 15px;
+            height: fit-content;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ccc;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background: rgba(0, 255, 255, 0.1);
+            color: #0ff;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+        }
+
+        /* ===== CONTENIDO PRINCIPAL ===== */
+        .container {
+            flex: 1;
+            min-width: 300px;
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+        }
+
+        .container h2 {
+            color: #0ff;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .container h3 {
+            color: #0af;
+            margin: 20px 0 15px;
+        }
+
+        .container h4 {
+            color: #0ff;
+            margin: 15px 0 10px;
+        }
+
+        .concepto {
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #0ff;
+        }
+
+        .codigo {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #0ff;
+        }
+
+        .keyword { color: #ff7b7b; }
+        .string { color: #aaff77; }
+        .number { color: #77aaff; }
+        .function { color: #ffaa77; }
+        .comment { color: #777; }
+
+        .btn {
+            background: #002222;
+            color: #0ff;
+            border: 1px solid #0ff;
+            padding: 10px 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #003333;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .resultado {
+            background: #0d0d1a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #aaa;
+            min-height: 20px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* ===== COLUMNA DERECHA ===== */
+        .sidebar-derecha {
+            flex: 0 0 280px;
+            background: #0d0d1a;
+            border: 1px solid #0ff;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+        }
+
+        .fuente-info h3 {
+            color: #0ff;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .enlace-fuente {
+            display: inline-block;
+            margin: 12px 0;
+            padding: 12px;
+            background: #001a1a;
+            color: #0ff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .enlace-fuente:hover {
+            background: #003333;
+            text-decoration: underline;
+        }
+
+        .nota {
+            font-size: 0.9em;
+            color: #aaa;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        /* ===== PIE DE PÁGINA ===== */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            color: #777;
+            margin-top: 30px;
+            border-top: 1px solid #0ff;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .layout {
+                flex-direction: column;
+            }
+            .sidebar, .sidebar-derecha {
+                flex: none;
+                width: 100%;
+            }
+            .search-container input {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .menu-toggle {
+                display: block;
+            }
+            .search-container {
+                margin-right: 10px;
+            }
+            .search-container input {
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- CABECERA -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <h1>----JavaScript----</h1>
+        </div>
+
+        <div class="search-container">
+            <input type="search" id="buscador" placeholder="Buscar tema..." aria-label="Buscar en el temario">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- LAYOUT PRINCIPAL -->
+    <div class="layout">
+        <!-- SIDEBAR IZQUIERDO -->
+        <nav class="sidebar" id="sidebar">
+            <ul id="menuLista">
+                <li><a href="#que-es-js" class="active"><i class="fas fa-info-circle"></i> ¿Qué es JavaScript?</a></li>
+                <li><a href="#tipos-datos"><i class="fas fa-database"></i> Tipos de Datos</a></li>
+                <li><a href="#variables"><i class="fas fa-variable"></i> Variables y Constantes</a></li>
+                <li><a href="#operadores"><i class="fas fa-calculator"></i> Operadores</a></li>
+                <li><a href="#estructuras-control"><i class="fas fa-project-diagram"></i> Estructuras de Control</a></li>
+                <li><a href="#funciones"><i class="fas fa-function"></i> Funciones</a></li>
+                <li><a href="#objetos"><i class="fas fa-object-group"></i> Objetos</a></li>
+                <li><a href="#arrays"><i class="fas fa-list"></i> Arrays</a></li>
+                <li><a href="#metodos"><i class="fas fa-cogs"></i> Métodos</a></li>
+                <li><a href="#io"><i class="fas fa-exchange-alt"></i> I/O</a></li>
+            </ul>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="container" id="mainContent">
+            <section id="que-es-js">
+                <h2><i class="fas fa-info-circle"></i> ¿Qué es JavaScript?</h2>
+                <div class="concepto">
+                    <h4>Definición</h4>
+                    <p>JavaScript es un lenguaje de programación interpretado que se ejecuta en el navegador del cliente. Es uno de los pilares fundamentales de la web moderna junto con HTML y CSS.</p>
+                </div>
+                <p>JavaScript permite crear páginas web interactivas dinámicas. Se puede integrar en páginas HTML para responder a eventos del usuario, manipular el DOM, enviar y recibir datos, y mucho más.</p>
+                
+                <h3>Características Principales</h3>
+                <ul>
+                    <li>Lenguaje de alto nivel</li>
+                    <li>Interpretado (no requiere compilación previa)</li>
+                    <li>Dinámico (tipado débil y dinámico)</li>
+                    <li>Multi-paradigma (orientado a objetos, funcional, imperativo)</li>
+                    <li>Basado en prototipos</li>
+                </ul>
+                
+                <div class="codigo">
+                    <code>
+                        // Ejemplo simple de JavaScript<br>
+                        <span class="keyword">let</span> mensaje = <span class="string">"¡Hola, mundo!"</span>;<br>
+                        <span class="function">console.log</span>(mensaje); <span class="comment">// Imprime: ¡Hola, mundo!</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarEjemploJS()">
+                    <i class="fas fa-play"></i> Ejecutar Ejemplo
+                </button>
+                <div class="resultado" id="resultado-js">
+                    Presiona el botón para ejecutar el ejemplo...
+                </div>
+            </section>
+
+            <section id="tipos-datos">
+                <h2><i class="fas fa-database"></i> Tipos de Datos</h2>
+                <div class="concepto">
+                    <h4>Tipos Primitivos</h4>
+                    <p>Los tipos primitivos son inmutables y se pasan por valor. En JavaScript existen 7 tipos primitivos:</p>
+                    <ul>
+                        <li>String</li>
+                        <li>Number</li>
+                        <li>BigInt</li>
+                        <li>Boolean</li>
+                        <li>Undefined</li>
+                        <li>Null</li>
+                        <li>Symbol</li>
+                    </ul>
+                </div>
+                
+                <div class="concepto">
+                    <h4>Tipos de Objeto</h4>
+                    <p>Los objetos son tipos complejos que pueden contener múltiples valores y métodos:</p>
+                    <ul>
+                        <li>Object</li>
+                        <li>Array</li>
+                        <li>Function</li>
+                        <li>Date</li>
+                        <li>RegExp</li>
+                        <li>Error</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Ejemplos de tipos primitivos</span><br>
+                        <span class="keyword">let</span> cadena = <span class="string">"Hola"</span>; <span class="comment">// String</span><br>
+                        <span class="keyword">let</span> numero = <span class="number">42</span>; <span class="comment">// Number</span><br>
+                        <span class="keyword">let</span> booleano = <span class="keyword">true</span>; <span class="comment">// Boolean</span><br>
+                        <span class="keyword">let</span> nulo = <span class="keyword">null</span>; <span class="comment">// Null</span><br>
+                        <span class="keyword">let</span> indefinido; <span class="comment">// Undefined</span><br><br>
+                        
+                        <span class="comment">// Ejemplo de objeto</span><br>
+                        <span class="keyword">let</span> persona = {<br>
+                        &nbsp;&nbsp;nombre: <span class="string">"Ana"</span>,<br>
+                        &nbsp;&nbsp;edad: <span class="number">30</span><br>
+                        }; <span class="comment">// Object</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarTiposDatos()">
+                    <i class="fas fa-eye"></i> Ver Tipos de Datos
+                </button>
+                <div class="resultado" id="resultado-tipos">
+                    Presiona el botón para ver los tipos de datos...
+                </div>
+            </section>
+
+            <section id="variables">
+                <h2><i class="fas fa-variable"></i> Variables y Constantes</h2>
+                <div class="concepto">
+                    <h4>Declaración de Variables</h4>
+                    <p>En JavaScript moderno existen 3 formas de declarar variables:</p>
+                    <ul>
+                        <li><strong>var</strong>: Tiene alcance de función o global. No se recomienda usarlo</li>
+                        <li><strong>let</strong>: Tiene alcance de bloque. Se puede reasignar</li>
+                        <li><strong>const</strong>: Tiene alcance de bloque. No se puede reasignar</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Declaración con let (variable)</span><br>
+                        <span class="keyword">let</span> contador = <span class="number">0</span>;<br>
+                        contador = <span class="number">10</span>; <span class="comment">// Válido: se puede reasignar</span><br><br>
+                        
+                        <span class="comment">// Declaración con const (constante)</span><br>
+                        <span class="keyword">const</span> PI = <span class="number">3.14159</span>;<br>
+                        <span class="comment">// PI = 3.14; // Error: no se puede reasignar</span><br><br>
+                        
+                        <span class="comment">// Nota: para objetos y arrays, el contenido puede modificarse</span><br>
+                        <span class="keyword">const</span> persona = { nombre: <span class="string">"Juan"</span> };<br>
+                        persona.nombre = <span class="string">"Pedro"</span>; <span class="comment">// Válido: se modifica el contenido, no la referencia</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarVariables()">
+                    <i class="fas fa-sync-alt"></i> Probar Variables
+                </button>
+                <div class="resultado" id="resultado-variables">
+                    Presiona el botón para probar variables...
+                </div>
+            </section>
+
+            <section id="operadores">
+                <h2><i class="fas fa-calculator"></i> Operadores</h2>
+                <div class="concepto">
+                    <h4>Clasificación de Operadores</h4>
+                    <p>Los operadores permiten realizar operaciones con valores. Se clasifican en:</p>
+                    <ul>
+                        <li>Aritméticos: +, -, , /, %, *</li>
+                        <li>Asignación: =, +=, -=, *=, /=, %=</li>
+                        <li>Comparación: ==, ===, !=, !==, >, <, >=, <=</li>
+                        <li>Lógicos: &&, ||, !</li>
+                        <li>Unarios: typeof, +, -, !, ++, --</li>
+                        <li>Ternario: ? :</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Operadores aritméticos</span><br>
+                        <span class="keyword">let</span> a = <span class="number">10</span>;<br>
+                        <span class="keyword">let</span> b = <span class="number">3</span>;<br>
+                        <span class="keyword">let</span> suma = a + b; <span class="comment">// 13</span><br>
+                        <span class="keyword">let</span> modulo = a % b; <span class="comment">// 1</span><br><br>
+                        
+                        <span class="comment">// Operadores de comparación</span><br>
+                        <span class="keyword">let</span> igualdad = a == <span class="string">"10"</span>; <span class="comment">// true (coerción)</span><br>
+                        <span class="keyword">let</span> identidad = a === <span class="string">"10"</span>; <span class="comment">// false (sin coerción)</span><br><br>
+                        
+                        <span class="comment">// Operadores lógicos</span><br>
+                        <span class="keyword">let</span> and = (a > <span class="number">5</span>) && (b < <span class="number">5</span>); <span class="comment">// true</span><br>
+                        <span class="keyword">let</span> or = (a > <span class="number">15</span>) || (b < <span class="number">5</span>); <span class="comment">// true</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarOperadores()">
+                    <i class="fas fa-calculator"></i> Calcular Operaciones
+                </button>
+                <div class="resultado" id="resultado-operadores">
+                    Presiona el botón para ver resultados de operadores...
+                </div>
+            </section>
+
+            <section id="estructuras-control">
+                <h2><i class="fas fa-project-diagram"></i> Estructuras de Control</h2>
+                <div class="concepto">
+                    <h4>Estructuras Condicionales</h4>
+                    <p>Permiten ejecutar código basado en condiciones:</p>
+                    <ul>
+                        <li><strong>if/else</strong>: Evaluación condicional</li>
+                        <li><strong>switch</strong>: Evaluación de múltiples casos</li>
+                    </ul>
+                </div>
+                
+                <div class="concepto">
+                    <h4>Estructuras de Repetición</h4>
+                    <p>Permiten repetir bloques de código:</p>
+                    <ul>
+                        <li><strong>for</strong>: Bucle con contador</li>
+                        <li><strong>while</strong>: Bucle condicional</li>
+                        <li><strong>do...while</strong>: Bucle que se ejecuta al menos una vez</li>
+                        <li><strong>for...in</strong>: Recorre propiedades de objetos</li>
+                        <li><strong>for...of</strong>: Recorre elementos de colecciones</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Estructura condicional: if/else</span><br>
+                        <span class="keyword">let</span> edad = <span class="number">18</span>;<br>
+                        <span class="keyword">if</span> (edad >= <span class="number">18</span>) {<br>
+                        &nbsp;&nbsp;<span class="function">console.log</span>(<span class="string">"Mayor de edad"</span>);<br>
+                        } <span class="keyword">else</span> {<br>
+                        &nbsp;&nbsp;<span class="function">console.log</span>(<span class="string">"Menor de edad"</span>);<br>
+                        }<br><br>
+                        
+                        <span class="comment">// Bucle for</span><br>
+                        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i < <span class="number">5</span>; i++) {<br>
+                        &nbsp;&nbsp;<span class="function">console.log</span>(<span class="string">"Iteración "</span> + i);<br>
+                        }<br><br>
+                        
+                        <span class="comment">// Bucle while</span><br>
+                        <span class="keyword">let</span> contador = <span class="number">0</span>;<br>
+                        <span class="keyword">while</span> (contador < <span class="number">3</span>) {<br>
+                        &nbsp;&nbsp;<span class="function">console.log</span>(<span class="string">"Contador: "</span> + contador);<br>
+                        &nbsp;&nbsp;contador++;<br>
+                        }
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarEstructuras()">
+                    <i class="fas fa-cogs"></i> Ejecutar Estructuras
+                </button>
+                <div class="resultado" id="resultado-estructuras">
+                    Presiona el botón para ejecutar estructuras de control...
+                </div>
+            </section>
+
+            <section id="funciones">
+                <h2><i class="fas fa-function"></i> Funciones</h2>
+                <div class="concepto">
+                    <h4>Definición de Funciones</h4>
+                    <p>Las funciones son bloques de código reutilizables que realizan una tarea específica:</p>
+                    <ul>
+                        <li>Funciones declaradas: <code>function nombre() {}</code></li>
+                        <li>Funciones expresadas: <code>const nombre = function() {}</code></li>
+                        <li>Funciones flecha: <code>const nombre = () => {}</code></li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Función declarada</span><br>
+                        <span class="function">function</span> <span class="function">saludar</span>(nombre) {<br>
+                        &nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"¡Hola, "</span> + nombre + <span class="string">"!"</span>;<br>
+                        }<br><br>
+                        
+                        <span class="comment">// Función expresada</span><br>
+                        <span class="keyword">const</span> <span class="function">sumar</span> = <span class="function">function</span>(a, b) {<br>
+                        &nbsp;&nbsp;<span class="keyword">return</span> a + b;<br>
+                        };<br><br>
+                        
+                        <span class="comment">// Función flecha</span><br>
+                        <span class="keyword">const</span> <span class="function">multiplicar</span> = (x, y) => x * y;<br><br>
+                        
+                        <span class="comment">// Llamada a funciones</span><br>
+                        <span class="function">console.log</span>(<span class="function">saludar</span>(<span class="string">"Ana"</span>)); <span class="comment">// "¡Hola, Ana!"</span><br>
+                        <span class="function">console.log</span>(<span class="function">sumar</span>(<span class="number">5</span>, <span class="number">3</span>)); <span class="comment">// 8</span><br>
+                        <span class="function">console.log</span>(<span class="function">multiplicar</span>(<span class="number">4</span>, <span class="number">7</span>)); <span class="comment">// 28</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarFunciones()">
+                    <i class="fas fa-cogs"></i> Ejecutar Funciones
+                </button>
+                <div class="resultado" id="resultado-funciones">
+                    Presiona el botón para ejecutar funciones...
+                </div>
+            </section>
+
+            <section id="objetos">
+                <h2><i class="fas fa-object-group"></i> Objetos</h2>
+                <div class="concepto">
+                    <h4>Objetos en JavaScript</h4>
+                    <p>Los objetos son colecciones de propiedades que pueden contener valores y métodos:</p>
+                    <ul>
+                        <li>Propiedades: Clave-valor (datos)</li>
+                        <li>Métodos: Funciones dentro de un objeto</li>
+                        <li>Creación: Literales, constructores, clases</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Objeto literal</span><br>
+                        <span class="keyword">const</span> coche = {<br>
+                        &nbsp;&nbsp;marca: <span class="string">"Toyota"</span>,<br>
+                        &nbsp;&nbsp;modelo: <span class="string">"Corolla"</span>,<br>
+                        &nbsp;&nbsp;anio: <span class="number">2020</span>,<br>
+                        &nbsp;&nbsp;encendido: <span class="keyword">false</span>,<br><br>
+                        
+                        &nbsp;&nbsp;arrancar: <span class="function">function</span>() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.encendido = <span class="keyword">true</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Coche encendido"</span>;<br>
+                        &nbsp;&nbsp;},<br><br>
+                        
+                        &nbsp;&nbsp;detener: <span class="function">function</span>() {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">this</span>.encendido = <span class="keyword">false</span>;<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"Coche apagado"</span>;<br>
+                        &nbsp;&nbsp;}<br>
+                        };<br><br>
+                        
+                        <span class="comment">// Acceso a propiedades</span><br>
+                        <span class="function">console.log</span>(coche.marca); <span class="comment">// "Toyota"</span><br>
+                        <span class="function">console.log</span>(coche[<span class="string">"modelo"</span>]); <span class="comment">// "Corolla"</span><br><br>
+                        
+                        <span class="comment">// Llamada a métodos</span><br>
+                        <span class="function">console.log</span>(coche.arrancar()); <span class="comment">// "Coche encendido"</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarObjetos()">
+                    <i class="fas fa-cogs"></i> Manipular Objeto
+                </button>
+                <div class="resultado" id="resultado-objetos">
+                    Presiona el botón para manipular objetos...
+                </div>
+            </section>
+
+            <section id="arrays">
+                <h2><i class="fas fa-list"></i> Arrays</h2>
+                <div class="concepto">
+                    <h4>Arrays en JavaScript</h4>
+                    <p>Los arrays son colecciones ordenadas de valores. Pueden contener cualquier tipo de dato:</p>
+                    <ul>
+                        <li>Creación: <code>[]</code> o <code>new Array()</code></li>
+                        <li>Acceso: <code>array[índice]</code></li>
+                        <li>Métodos comunes: push(), pop(), shift(), unshift(), slice(), splice(), map(), filter(), reduce()</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Creación de arrays</span><br>
+                        <span class="keyword">const</span> frutas = [<span class="string">"manzana"</span>, <span class="string">"banana"</span>, <span class="string">"naranja"</span>];<br>
+                        <span class="keyword">const</span> numeros = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];<br><br>
+                        
+                        <span class="comment">// Agregar elementos</span><br>
+                        frutas.push(<span class="string">"uva"</span>); <span class="comment">// Agrega al final</span><br>
+                        frutas.unshift(<span class="string">"mango"</span>); <span class="comment">// Agrega al inicio</span><br><br>
+                        
+                        <span class="comment">// Eliminar elementos</span><br>
+                        frutas.pop(); <span class="comment">// Elimina del final</span><br>
+                        frutas.shift(); <span class="comment">// Elimina del inicio</span><br><br>
+                        
+                        <span class="comment">// Transformar con map</span><br>
+                        <span class="keyword">const</span> dobles = numeros.map(n => n * <span class="number">2</span>); <span class="comment">// [2, 4, 6, 8, 10]</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarArrays()">
+                    <i class="fas fa-cogs"></i> Manipular Arrays
+                </button>
+                <div class="resultado" id="resultado-arrays">
+                    Presiona el botón para manipular arrays...
+                </div>
+            </section>
+
+            <section id="metodos">
+                <h2><i class="fas fa-cogs"></i> Métodos Comunes</h2>
+                <div class="concepto">
+                    <h4>Métodos de Strings</h4>
+                    <p>Los strings tienen métodos para manipular su contenido:</p>
+                    <ul>
+                        <li>toUpperCase(), toLowerCase()</li>
+                        <li>substring(), slice()</li>
+                        <li>split(), trim()</li>
+                        <li>replace(), indexOf(), includes()</li>
+                    </ul>
+                </div>
+                
+                <div class="concepto">
+                    <h4>Métodos de Arrays</h4>
+                    <p>Los arrays tienen métodos para manipular colecciones:</p>
+                    <ul>
+                        <li>push(), pop(), shift(), unshift()</li>
+                        <li>map(), filter(), reduce()</li>
+                        <li>forEach(), find(), some(), every()</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Métodos de strings</span><br>
+                        <span class="keyword">let</span> texto = <span class="string">"  JavaScript es genial  "</span>;<br>
+                        <span class="function">console.log</span>(texto.trim()); <span class="comment">// "JavaScript es genial"</span><br>
+                        <span class="function">console.log</span>(texto.toUpperCase()); <span class="comment">// "  JAVASCRIPT ES GENIAL  "</span><br><br>
+                        
+                        <span class="comment">// Métodos de arrays</span><br>
+                        <span class="keyword">const</span> numeros = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];<br>
+                        <span class="keyword">const</span> pares = numeros.filter(n => n % <span class="number">2</span> === <span class="number">0</span>); <span class="comment">// [2, 4]</span><br>
+                        <span class="keyword">const</span> suma = numeros.reduce((acc, n) => acc + n, <span class="number">0</span>); <span class="comment">// 15</span>
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarMetodos()">
+                    <i class="fas fa-cogs"></i> Ejecutar Métodos
+                </button>
+                <div class="resultado" id="resultado-metodos">
+                    Presiona el botón para ejecutar métodos...
+                </div>
+            </section>
+
+            <section id="io">
+                <h2><i class="fas fa-exchange-alt"></i> Entrada y Salida (I/O)</h2>
+                <div class="concepto">
+                    <h4>Entrada de Datos</h4>
+                    <p>Formas de obtener datos del usuario:</p>
+                    <ul>
+                        <li><strong>prompt()</strong>: Muestra un cuadro de diálogo para entrada de texto</li>
+                        <li><strong>Formularios HTML</strong>: Campos de entrada en la página</li>
+                    </ul>
+                </div>
+                
+                <div class="concepto">
+                    <h4>Salida de Datos</h4>
+                    <p>Formas de mostrar resultados:</p>
+                    <ul>
+                        <li><strong>alert()</strong>: Muestra un mensaje emergente</li>
+                        <li><strong>console.log()</strong>: Muestra en la consola del navegador</li>
+                        <li><strong>innerHTML</strong>: Modifica el contenido HTML de un elemento</li>
+                    </ul>
+                </div>
+                
+                <div class="codigo">
+                    <code>
+                        <span class="comment">// Entrada con prompt</span><br>
+                        <span class="keyword">let</span> nombre = <span class="function">prompt</span>(<span class="string">"¿Cómo te llamas?"</span>);<br><br>
+                        
+                        <span class="comment">// Salida con alert</span><br>
+                        <span class="function">alert</span>(<span class="string">"¡Hola, "</span> + nombre + <span class="string">"!"</span>);<br><br>
+                        
+                        <span class="comment">// Salida en consola</span><br>
+                        <span class="function">console.log</span>(<span class="string">"Usuario: "</span> + nombre);<br><br>
+                        
+                        <span class="comment">// Salida en página web</span><br>
+                        document.getElementById(<span class="string">"resultado"</span>).innerHTML = <span class="string">"Bienvenido "</span> + nombre;
+                    </code>
+                </div>
+                
+                <button class="btn" onclick="mostrarIO()">
+                    <i class="fas fa-exchange-alt"></i> Probar I/O
+                </button>
+                <div class="resultado" id="resultado-io">
+                    Presiona el botón para probar entrada y salida...
+                </div>
+            </section>
+        </main>
+
+        <!-- COLUMNA DERECHA: FUENTE DE INFORMACIÓN -->
+        <aside class="sidebar-derecha">
+            <div class="fuente-info">
+                <h3><i class="fas fa-book"></i> Fuente Oficial</h3>
+                <p>Consulta la documentación más confiable y actualizada de JavaScript:</p>
+                <a href="https://developer.mozilla.org/es/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer" class="enlace-fuente">
+                    <i class="fas fa-external-link-alt"></i> Guía de JavaScript – MDN Web Docs
+                </a>
+                <p class="nota">MDN (Mozilla Developer Network) es mantenida por expertos y es la referencia estándar para desarrolladores web.</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>&copy; 2025 JavaScript Neon - Temario Completo | Diseño con Estilo Neon</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Buscador en el menú
+        document.getElementById('buscador').addEventListener('input', function() {
+            const texto = this.value.toLowerCase();
+            const items = document.querySelectorAll('#menuLista li a');
+            items.forEach(item => {
+                const textoItem = item.textContent.toLowerCase();
+                item.parentElement.style.display = textoItem.includes(texto) ? '' : 'none';
+            });
+        });
+
+        // Funciones de ejemplo
+        function mostrarEjemploJS() {
+            document.getElementById('resultado-js').textContent = '¡Hola, mundo!';
+        }
+        function mostrarTiposDatos() {
+            const tipos = ['String', 'Number', 'Boolean', 'Null', 'Undefined', 'Object', 'Symbol'];
+            document.getElementById('resultado-tipos').innerHTML = '<strong>Tipos detectados:</strong> ' + tipos.join(', ');
+        }
+        function mostrarVariables() {
+            let v = 100;
+            const c = 'constante';
+            document.getElementById('resultado-variables').textContent = Variable: ${v}, Constante: ${c};
+        }
+        function mostrarOperadores() {
+            document.getElementById('resultado-operadores').textContent = '10 + 3 = 13 | 10 % 3 = 1 | (10 > 5) && (3 < 5) = true';
+        }
+        function mostrarEstructuras() {
+            document.getElementById('resultado-estructuras').textContent = 'Estructuras ejecutadas: if/else, for, while';
+        }
+        function mostrarFunciones() {
+            document.getElementById('resultado-funciones').textContent = 'Funciones ejecutadas correctamente.';
+        }
+        function mostrarObjetos() {
+            document.getElementById('resultado-objetos').textContent = 'Objeto "coche" manipulado: encendido = true';
+        }
+        function mostrarArrays() {
+            document.getElementById('resultado-arrays').textContent = 'Array modificado: ["banana", "naranja", "uva"]';
+        }
+        function mostrarMetodos() {
+            document.getElementById('resultado-metodos').textContent = 'Métodos aplicados: trim(), filter(), reduce()';
+        }
+        function mostrarIO() {
+            document.getElementById('resultado-io').textContent = 'Entrada/Salida simulada.';
+        }
+    </script>
+</body>
+</html>
